@@ -1,0 +1,9 @@
+.square {
+  background: lightgreen;
+  width: 2rem;
+  height: 2rem;
+  line-height: 2rem;
+  text-align: center;
+  border: solid 0.5px #333;
+  border-collapse: collapse;
+}
