@@ -2,8 +2,46 @@
   background: lightgreen;
   width: 2rem;
   height: 2rem;
-  line-height: 2rem;
-  text-align: center;
   border: solid 0.5px #333;
   border-collapse: collapse;
+  position: relative;
+}
+
+.stone {
+  border: solid 0.2px #333;
+  width: 1.2rem;
+  height: 1.2rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  border-radius: 50%;
+  box-shadow: 0.1rem 0.1rem 0.1rem rgba(100, 100, 100, 0.5);
+  animation: placestone 0.5s;
+}
+
+.black {
+  background: #000;
+}
+
+.white {
+  background: #fff;
+}
+
+@keyframes placestone {
+  from {
+    width: 3rem;
+    height: 3rem;
+    z-index: 2;
+    position: absolute;
+    top: -0.5rem;
+    left: -0.5rem;
+  }
+  to {
+    width: 1.2rem;
+    height: 1.2rem;
+    z-index: 1;
+  }
 }
