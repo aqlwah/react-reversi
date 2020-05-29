@@ -5,115 +5,156 @@ import './Board.css';
 function Board() {
   // 盤面の状態　8 * 8 の二次元配列
   const [boardState, setBoardState] = useState(
-    Array.from(Array(8), row => (row = Array(8).fill(null)))
+    Array.from(Array(8), (row) => (row = Array(8).fill(null)))
   );
 
   // 石の状態の定数　黒または白
   const squareState = {
     BLACK: 'black',
-    WHITE: 'white'
+    WHITE: 'white',
   };
 
   // 現在の手番　黒または白を交互に入れていく
   const [currentTurn, setCurrentTurn] = useState(squareState.BLACK);
 
-  // 石の反転
-  const turnoverStone = (rowindex, colindex, turn) => {
-    // 反転するマスのインデックスを保持する配列
-    const turnoverTarget = [];
-
-    // 指定されたインデックスをチェックして反転対象か判定するプライベート関数
-    const checkTarget = (row, col) => {
-      const target = boardState[row] && boardState[row][col];
-      // 空白マスに行き当ったら終了
-      if (!target) {
-        return true;
-      }
-      // 自分の石だったら反転させて終了
-      if (target === turn) {
-        turnoverTarget.forEach(indexes => {
-          boardState[indexes.row][indexes.col] =
-            boardState[indexes.row][indexes.col] === squareState.BLACK
-              ? squareState.WHITE
-              : squareState.BLACK;
-        });
-        return true;
-      }
-      // 相手の石を反転対象として保持
-      turnoverTarget.push({ row, col });
-    };
+  // 指定されたマスから反転できる石があるかチェック
+  const checkTarget = (rowindex, colindex, turn) => {
+    // 反転できるマスのインデックスを保持する配列
+    let turnoverTarget = [];
+    let tempTurnoverTarget = [];
 
     // 右方向の反転チェック
-    turnoverTarget.length = 0;
+    tempTurnoverTarget.length = 0;
     for (let i = colindex + 1; i < boardState[rowindex].length; i++) {
-      if (checkTarget(rowindex, i)) {
+      const target = boardState[rowindex] && boardState[rowindex][i];
+      if (!target) {
         break;
       }
+      if (target === turn) {
+        turnoverTarget = turnoverTarget.concat(tempTurnoverTarget);
+        break;
+      }
+      tempTurnoverTarget.push({ row: rowindex, col: i });
     }
 
     // 左方向の反転チェック
-    turnoverTarget.length = 0;
+    tempTurnoverTarget.length = 0;
     for (let i = colindex - 1; i >= 0; i--) {
-      if (checkTarget(rowindex, i)) {
+      const target = boardState[rowindex] && boardState[rowindex][i];
+      if (!target) {
+        break;
+      }
+      if (target === turn) {
+        turnoverTarget = turnoverTarget.concat(tempTurnoverTarget);
         break;
       }
     }
 
     // 上方向の反転チェック
-    turnoverTarget.length = 0;
+    tempTurnoverTarget.length = 0;
     for (let i = rowindex - 1; i >= 0; i--) {
-      if (checkTarget(i, colindex)) {
+      const target = boardState[i] && boardState[i][colindex];
+      if (!target) {
         break;
       }
+      if (target === turn) {
+        turnoverTarget = turnoverTarget.concat(tempTurnoverTarget);
+        break;
+      }
+      tempTurnoverTarget.push({ row: i, col: colindex });
     }
 
     // 下方向の反転チェック
-    turnoverTarget.length = 0;
+    tempTurnoverTarget.length = 0;
     for (let i = rowindex + 1; i < boardState.length; i++) {
-      if (checkTarget(i, colindex)) {
+      const target = boardState[i] && boardState[i][colindex];
+      if (!target) {
         break;
       }
+      if (target === turn) {
+        turnoverTarget = turnoverTarget.concat(tempTurnoverTarget);
+        break;
+      }
+      tempTurnoverTarget.push({ row: i, col: colindex });
     }
 
     // 右上方向の反転チェック
-    turnoverTarget.length = 0;
+    tempTurnoverTarget.length = 0;
     let tempRowindex = rowindex;
     for (let i = colindex + 1; i < boardState[rowindex].length; i++) {
       tempRowindex--;
-      if (checkTarget(tempRowindex, i)) {
+      const target = boardState[tempRowindex] && boardState[tempRowindex][i];
+      if (!target) {
         break;
       }
+      if (target === turn) {
+        turnoverTarget = turnoverTarget.concat(tempTurnoverTarget);
+        break;
+      }
+      tempTurnoverTarget.push({ row: tempRowindex, col: i });
     }
 
     // 右下方向の反転チェック
-    turnoverTarget.length = 0;
+    tempTurnoverTarget.length = 0;
     tempRowindex = rowindex;
     for (let i = colindex + 1; i < boardState[rowindex].length; i++) {
       tempRowindex++;
-      if (checkTarget(tempRowindex, i)) {
+      const target = boardState[tempRowindex] && boardState[tempRowindex][i];
+      if (!target) {
         break;
       }
+      if (target === turn) {
+        turnoverTarget = turnoverTarget.concat(tempTurnoverTarget);
+        break;
+      }
+      tempTurnoverTarget.push({ row: tempRowindex, col: i });
     }
 
     // 左上方向の反転チェック
-    turnoverTarget.length = 0;
+    tempTurnoverTarget.length = 0;
     tempRowindex = rowindex;
     for (let i = colindex - 1; i >= 0; i--) {
       tempRowindex--;
-      if (checkTarget(tempRowindex, i)) {
+      const target = boardState[tempRowindex] && boardState[tempRowindex][i];
+      if (!target) {
         break;
       }
+      if (target === turn) {
+        turnoverTarget = turnoverTarget.concat(tempTurnoverTarget);
+        break;
+      }
+      tempTurnoverTarget.push({ row: tempRowindex, col: i });
     }
 
     // 左下方向の反転チェック
-    turnoverTarget.length = 0;
+    tempTurnoverTarget.length = 0;
     tempRowindex = rowindex;
     for (let i = colindex - 1; i >= 0; i--) {
       tempRowindex++;
-      if (checkTarget(tempRowindex, i)) {
+      const target = boardState[tempRowindex] && boardState[tempRowindex][i];
+      if (!target) {
         break;
       }
+      if (target === turn) {
+        turnoverTarget = turnoverTarget.concat(tempTurnoverTarget);
+        break;
+      }
+      tempTurnoverTarget.push({ row: tempRowindex, col: i });
     }
+
+    return turnoverTarget;
+  };
+
+  // 石の反転
+  const turnoverStone = (turnoverTarget) => {
+    turnoverTarget.forEach((indexes) => {
+      if (indexes) {
+        boardState[indexes.row][indexes.col] =
+          boardState[indexes.row][indexes.col] === squareState.BLACK
+            ? squareState.WHITE
+            : squareState.BLACK;
+      }
+    });
 
     // boardStateを更新
     setBoardState(boardState);
@@ -126,12 +167,19 @@ function Board() {
       return;
     }
 
-    // 現在の手番の石をマス目に置いてboardStateを更新
-    boardState[rowindex][colindex] = turn;
-    setBoardState(boardState);
+    // 反転可能なマスを取得する
+    const turnoverTarget = checkTarget(rowindex, colindex, turn);
 
-    // 石を反転する
-    turnoverStone(rowindex, colindex, turn);
+    if (turnoverTarget.length) {
+      // 現在の手番の石をマス目に置いてboardStateを更新
+      boardState[rowindex][colindex] = turn;
+      setBoardState(boardState);
+
+      // 石を反転する
+      turnoverStone(turnoverTarget);
+    } else {
+      alert('そのマスに石を置くことはできません。');
+    }
 
     // 手番を交代
     setCurrentTurn(
