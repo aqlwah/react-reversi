@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Square from './Square';
 import './Board.css';
 
@@ -13,6 +13,16 @@ function Board() {
     BLACK: 'black',
     WHITE: 'white',
   };
+
+  useEffect(() => {
+    boardState[3][3] = squareState.BLACK;
+    boardState[3][4] = squareState.WHITE;
+    boardState[4][3] = squareState.WHITE;
+    boardState[4][4] = squareState.BLACK;
+
+    // boardStateを更新
+    setBoardState(Array.from(boardState));
+  }, []);
 
   // 現在の手番　黒または白を交互に入れていく
   const [currentTurn, setCurrentTurn] = useState(squareState.BLACK);
@@ -48,6 +58,7 @@ function Board() {
         turnoverTarget = turnoverTarget.concat(tempTurnoverTarget);
         break;
       }
+      tempTurnoverTarget.push({ row: rowindex, col: i });
     }
 
     // 上方向の反転チェック
@@ -142,6 +153,7 @@ function Board() {
       tempTurnoverTarget.push({ row: tempRowindex, col: i });
     }
 
+    console.log(turnoverTarget);
     return turnoverTarget;
   };
 
@@ -157,7 +169,7 @@ function Board() {
     });
 
     // boardStateを更新
-    setBoardState(boardState);
+    setBoardState(Array.from(boardState));
   };
 
   // 盤面に石を置く
@@ -173,7 +185,7 @@ function Board() {
     if (turnoverTarget.length) {
       // 現在の手番の石をマス目に置いてboardStateを更新
       boardState[rowindex][colindex] = turn;
-      setBoardState(boardState);
+      setBoardState(Array.from(boardState));
 
       // 石を反転する
       turnoverStone(turnoverTarget);
