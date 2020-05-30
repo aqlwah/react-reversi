@@ -1,0 +1,28 @@
+.popup {
+  width: 400px;
+  text-align: center;
+  font-weight: bold;
+  color: tomato;
+  border: solid 1px grey;
+  border-radius: 2rem;
+  box-shadow: 10px 10px 10px silver;
+  margin: 0 1rem;
+  padding: 1rem;
+  transform: scale(0);
+  transition: transform 0.2s;
+}
+
+.shown {
+  transform: scale(1);
+}
+
+.win {
+  font-weight: bold;
+  color: red;
+  font-size: 1.6rem;
+}
+
+.lose {
+  color: grey;
+  font-size: 0.8rem;
+}
