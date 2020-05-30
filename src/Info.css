@@ -1,0 +1,58 @@
+.infoarea {
+  min-width: 8rem;
+  border: solid 1px grey;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 5px 5px 5px lightgrey;
+}
+
+.info:last-child {
+  margin-top: 1rem;
+}
+
+.header {
+  font-weight: bold;
+  color: grey;
+}
+
+.turn {
+  font-size: 1.6rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.turn-black {
+  color: black;
+  text-shadow: 1px 1px 0 whitesmoke, -1px -1px 0 whitesmoke,
+    1px -1px 0 whitesmoke, -1px 1px 0 whitesmoke, 1px 0 0 whitesmoke,
+    -1px 0 0 whitesmoke, 0 1px 0 whitesmoke, 0 -1px 0 whitesmoke;
+}
+
+.turn-white {
+  color: white;
+  text-shadow: 1px 1px 0 grey, -1px -1px 0 grey, 1px -1px 0 grey,
+    -1px 1px 0 grey, 1px 0 0 grey, -1px 0 0 grey, 0 1px 0 grey, 0 -1px 0 grey;
+}
+
+.count-header {
+  border: solid 0.5px grey;
+  border-collapse: collapse;
+  margin-left: 1rem;
+  padding: 0 0.5rem;
+}
+
+.count-header-black {
+  background: black;
+  color: white;
+}
+
+.count-header-white {
+  background: white;
+  color: black;
+}
+
+.count-cell {
+  width: 3rem;
+  padding: 0 0.5rem;
+  text-align: right;
+}

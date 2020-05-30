@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Square from './Square';
+import Info from './Info';
 import './Board.css';
 
 function Board() {
@@ -153,7 +154,6 @@ function Board() {
       tempTurnoverTarget.push({ row: tempRowindex, col: i });
     }
 
-    console.log(turnoverTarget);
     return turnoverTarget;
   };
 
@@ -189,14 +189,14 @@ function Board() {
 
       // 石を反転する
       turnoverStone(turnoverTarget);
+
+      // 手番を交代
+      setCurrentTurn(
+        turn === squareState.BLACK ? squareState.WHITE : squareState.BLACK
+      );
     } else {
       alert('そのマスに石を置くことはできません。');
     }
-
-    // 手番を交代
-    setCurrentTurn(
-      turn === squareState.BLACK ? squareState.WHITE : squareState.BLACK
-    );
   };
 
   // 盤面となるDOM配列
@@ -219,7 +219,24 @@ function Board() {
       </div>
     );
   });
-  return <div className="flex-col">{squareArray}</div>;
+  return (
+    <div className="flex-row wrapper">
+      <div className="flex-col">{squareArray}</div>
+      <div>
+        <Info
+          turn={currentTurn}
+          blackCount={
+            boardState.flat().filter((square) => square === squareState.BLACK)
+              .length
+          }
+          whiteCount={
+            boardState.flat().filter((square) => square === squareState.WHITE)
+              .length
+          }
+        />
+      </div>
+    </div>
+  );
 }
 
 export default Board;
