@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import Square from './Square';
 import Info from './Info';
+import Message from './Message';
 import './Board.css';
+
+// 石の状態の定数　黒または白
+const squareState = {
+  BLACK: 'black',
+  WHITE: 'white',
+};
 
 function Board() {
   // 盤面の状態　8 * 8 の二次元配列
   const [boardState, setBoardState] = useState(
     Array.from(Array(8), (row) => (row = Array(8).fill(null)))
   );
-
-  // 石の状態の定数　黒または白
-  const squareState = {
-    BLACK: 'black',
-    WHITE: 'white',
-  };
 
   useEffect(() => {
     boardState[3][3] = squareState.BLACK;
@@ -27,6 +28,9 @@ function Board() {
 
   // 現在の手番　黒または白を交互に入れていく
   const [currentTurn, setCurrentTurn] = useState(squareState.BLACK);
+
+  // ゲームの進行状況 trueなら終わり
+  const [isGameEnd, setGameEnd] = useState(false);
 
   // 指定されたマスから反転できる石があるかチェック
   const checkTarget = (rowindex, colindex, turn) => {
@@ -194,6 +198,27 @@ function Board() {
       setCurrentTurn(
         turn === squareState.BLACK ? squareState.WHITE : squareState.BLACK
       );
+
+      // 置ける場所がなければゲーム終了
+      let isAvailable = false;
+      boardState.forEach((row, rowindex) => {
+        row.forEach((square, colindex) => {
+          if (!square) {
+            isAvailable =
+              isAvailable ||
+              !!checkTarget(
+                rowindex,
+                colindex,
+                turn === squareState.BLACK
+                  ? squareState.WHITE
+                  : squareState.BLACK
+              ).length;
+          }
+        });
+      });
+      if (!isAvailable) {
+        setGameEnd(true);
+      }
     } else {
       alert('そのマスに石を置くことはできません。');
     }
@@ -220,23 +245,29 @@ function Board() {
     );
   });
   return (
-    <div className="flex-row wrapper">
-      <div className="flex-col">{squareArray}</div>
+    <div>
+      <div className="flex-row wrapper">
+        <div className="flex-col">{squareArray}</div>
+        <div>
+          <Info
+            turn={currentTurn}
+            blackCount={
+              boardState.flat().filter((square) => square === squareState.BLACK)
+                .length
+            }
+            whiteCount={
+              boardState.flat().filter((square) => square === squareState.WHITE)
+                .length
+            }
+          />
+        </div>
+      </div>
       <div>
-        <Info
-          turn={currentTurn}
-          blackCount={
-            boardState.flat().filter((square) => square === squareState.BLACK)
-              .length
-          }
-          whiteCount={
-            boardState.flat().filter((square) => square === squareState.WHITE)
-              .length
-          }
-        />
+        <Message turn={currentTurn} isGameEnd={isGameEnd} />
       </div>
     </div>
   );
 }
 
 export default Board;
+export { squareState };
